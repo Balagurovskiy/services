@@ -6,7 +6,7 @@
 <br/>
 
 
-
+All generated certificates were added only for demonstration purposes
 # BUILD / DEPLOYMENT
 ### DEV
 #### message-handler
