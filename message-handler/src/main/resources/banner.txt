@@ -1,0 +1,5 @@
+
+            MESSAGE HANDLING SERVICE
+
+${application.title} ${application.version}
+Spring Boot ${spring-boot.version}

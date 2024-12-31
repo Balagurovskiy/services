@@ -1,0 +1,74 @@
+services:
+  loki:
+    image: grafana/loki:2.9.0
+    ports:
+      - "3100:3100"
+    command: -config.file=/etc/loki/local-config.yaml
+    networks:
+      - spring-cloud-network
+
+  grafana:
+    environment:
+      - GF_PATHS_PROVISIONING=/etc/grafana/provisioning
+      - GF_AUTH_ANONYMOUS_ENABLED=true
+      - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
+    entrypoint:
+      - sh
+      - -euc
+      - |
+        mkdir -p /etc/grafana/provisioning/datasources
+        cat <<EOF > /etc/grafana/provisioning/datasources/ds.yaml
+        apiVersion: 1
+        datasources:
+        - name: Loki
+          type: loki
+          access: proxy
+          orgId: 1
+          url: http://loki:3100
+          basicAuth: false
+          isDefault: true
+          version: 1
+          editable: false
+        EOF
+        /run.sh
+    image: grafana/grafana:latest
+    ports:
+      - "3000:3000"
+    networks:
+      - spring-cloud-network
+
+  message-handler:
+    container_name: message-handler
+    build:
+      context: message-handler
+      dockerfile: Dockerfile
+    image: message-handler:latest
+    ports:
+      - 8081:8081
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+    depends_on:
+      - loki
+      - grafana
+    networks:
+      - spring-cloud-network
+
+  message-generator:
+    container_name: message-generator
+    build:
+      context: message-generator
+      dockerfile: Dockerfile
+    image: message-generator:latest
+    ports:
+      - 8082:8082
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+    depends_on:
+      - loki
+      - grafana
+      - message-handler
+    networks:
+      - spring-cloud-network
+networks:
+  spring-cloud-network:
+    driver: bridge
