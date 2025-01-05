@@ -1,0 +1,36 @@
+services:
+  message-handler:
+    container_name: message-handler
+    build:
+      context: message-handler
+      dockerfile: Dockerfile
+    image: message-handler:latest
+    ports:
+      - 8081:8081
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+    depends_on:
+      - loki
+      - grafana
+    networks:
+      - spring-cloud-network
+
+  message-generator:
+    container_name: message-generator
+    build:
+      context: message-generator
+      dockerfile: Dockerfile
+    image: message-generator:latest
+    ports:
+      - 8082:8082
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+    depends_on:
+      - loki
+      - grafana
+      - message-handler
+    networks:
+      - spring-cloud-network
+networks:
+  spring-cloud-network:
+    driver: bridge
