@@ -14,7 +14,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/message")
 @RequiredArgsConstructor
-@Slf4j
 public class MessagesController {
     
     private final MessageSendingService sendingService;
@@ -23,19 +22,16 @@ public class MessagesController {
     @PostMapping(value = "/", consumes = MediaType.TEXT_PLAIN_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public String send(@RequestBody String request) {
-        log.info("Sending message :{}", request);
         return sendingService.send(authService.getToken(), request);
     }
 
     @GetMapping("/{id}")
     public MessageResponse getItemById(@PathVariable("id") int id) {
-        log.info("Requesting message with id:{}", id);
         return sendingService.getItemById(authService.getToken(),String.valueOf(id));
     }
 
     @GetMapping("/all")
     public List<MessageResponse> getAll() {
-        log.info("Requesting messages");
         return sendingService.getAll(authService.getToken());
     }
 }

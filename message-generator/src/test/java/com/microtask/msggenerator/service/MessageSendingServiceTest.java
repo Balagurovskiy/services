@@ -2,6 +2,7 @@ package com.microtask.msggenerator.service;
 
 import com.microtask.msggenerator.MessageGeneratorTest;
 import com.microtask.msggenerator.config.RoutingProperties;
+import com.microtask.msggenerator.dto.MessageResponse;
 import com.microtask.msggenerator.security.JwtTokenService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
