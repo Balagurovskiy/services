@@ -1,5 +1,6 @@
 package com.microtask.msggenerator.controller;
 
+import com.microtask.msggenerator.dto.MessageResponse;
 import com.microtask.msggenerator.service.AuthService;
 import com.microtask.msggenerator.service.MessageSendingService;
 import lombok.RequiredArgsConstructor;
@@ -8,7 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Objects;
+import java.util.List;
 
 @RestController
 @RequestMapping("/message")
@@ -22,15 +23,19 @@ public class MessagesController {
     @PostMapping(value = "/", consumes = MediaType.TEXT_PLAIN_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public String send(@RequestBody String request) {
-        if(Objects.nonNull(authService.getToken())){
-            log.info("Sending message :{}", request);
-            return sendingService.send(
-                    authService.getToken(),
-                    request
-            );
-        } else {
-            log.info("No token for message");
-        }
-        return "Message was not sent";
+        log.info("Sending message :{}", request);
+        return sendingService.send(authService.getToken(), request);
+    }
+
+    @GetMapping("/items/{id}")
+    public MessageResponse getItemById(@PathVariable("id") int id) {
+        log.info("Requesting message with id:{}", id);
+        return sendingService.getItemById(authService.getToken(),String.valueOf(id));
+    }
+
+    @GetMapping("/items/all")
+    public List<MessageResponse> getAll() {
+        log.info("Requesting messages");
+        return sendingService.getAll(authService.getToken());
     }
 }

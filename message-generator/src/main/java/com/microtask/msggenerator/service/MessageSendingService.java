@@ -2,16 +2,18 @@ package com.microtask.msggenerator.service;
 
 import com.microtask.msggenerator.config.RoutingProperties;
 import com.microtask.msggenerator.dto.MessageRequest;
+import com.microtask.msggenerator.dto.MessageResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
 
-import java.sql.SQLException;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -51,5 +53,37 @@ public class MessageSendingService{
             throw new IllegalStateException("Could not save message : " + body);
         }
         return res;
+    }
+
+    public List<MessageResponse> getAll(String token){
+        String theUrl = String.format("%s://%s/%s" , routs.getProtocol(), routs.getHost(), routs.getUrlAll());
+        log.info("Request :: {} ", theUrl);
+        HttpEntity<String> entity = new HttpEntity<>(
+                httpHeaderBuilder.createBearerHeaders(token));
+        ResponseEntity<List<MessageResponse>> response = restTemplate.exchange(
+                theUrl,
+                HttpMethod.GET,
+                entity,
+                new ParameterizedTypeReference<>() {}
+        );
+        log.info("Response :: status ({}) :: body: {}", response.getStatusCode(), response.getBody());
+        return response.getBody();
+    }
+
+    public MessageResponse getItemById(String token, String id){
+        String theUrl = String.format("%s://%s/%s" ,
+                routs.getProtocol(), routs.getHost(), routs.getUrlId().replace("{}", id));
+        log.info("Request :: {}", theUrl);
+
+        HttpEntity<String> entity = new HttpEntity<>(
+                httpHeaderBuilder.createBearerHeaders(token));
+        ResponseEntity<MessageResponse> response = restTemplate.exchange(
+                theUrl,
+                HttpMethod.GET,
+                entity,
+                MessageResponse.class
+        );
+        log.info("Response :: status ({}) :: body: {}", response.getStatusCode(), response.getBody());
+        return response.getBody();
     }
 }
