@@ -27,13 +27,13 @@ public class MessagesController {
         return sendingService.send(authService.getToken(), request);
     }
 
-    @GetMapping("/items/{id}")
+    @GetMapping("/{id}")
     public MessageResponse getItemById(@PathVariable("id") int id) {
         log.info("Requesting message with id:{}", id);
         return sendingService.getItemById(authService.getToken(),String.valueOf(id));
     }
 
-    @GetMapping("/items/all")
+    @GetMapping("/all")
     public List<MessageResponse> getAll() {
         log.info("Requesting messages");
         return sendingService.getAll(authService.getToken());
