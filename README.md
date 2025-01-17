@@ -83,9 +83,11 @@ generate truststore : <br/>
 ### FUNC SCHEMA
 <br/>
 <p align="center">
-  <img src="https://github.com/Balagurovskiy/messaging-serivces/blob/24f41d51ec9a8fd5826d9712550dd2816f03b958/scheme.jpg" title="hover text">
+  <img src="https://github.com/Balagurovskiy/services/blob/a57d403db840138c50b6e607f7e2b198f7cb086a/scheme.jpg" title="hover text">
 </p>
 
 ### Log observation :
 http://localhost:3000/ <br/>
 http://grafana:3000/
+### Postman :
+[service.postman_collection](service.postman_collection)

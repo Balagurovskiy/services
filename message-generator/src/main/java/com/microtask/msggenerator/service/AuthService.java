@@ -22,6 +22,7 @@ public class AuthService {
 
     public void refreshToken(){
         this.token = jwtTokenService.create(username);
+        log.info( this.token);
     }
 
     public int getExpiresSec() {
