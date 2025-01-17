@@ -27,7 +27,7 @@ public class MessagesController {
 
     @GetMapping("/{id}")
     public MessageResponse getItemById(@PathVariable("id") int id) {
-        return sendingService.getItemById(authService.getToken(),String.valueOf(id));
+        return sendingService.getItemById(authService.getToken(), String.valueOf(id));
     }
 
     @GetMapping("/all")
