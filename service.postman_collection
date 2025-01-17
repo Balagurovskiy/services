@@ -1,0 +1,64 @@
+{
+	"info": {
+		"_postman_id": "80569aec-08be-43a2-b1fa-b6f1d94ebc79",
+		"name": "New Collection",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "14210940"
+	},
+	"item": [
+		{
+			"name": "http://localhost:8182/message/1",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "http://localhost:8082/message/1"
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8182/message/all",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8082/message/all"
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8182/message/",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "test message 2\r\n",
+					"options": {
+						"raw": {
+							"language": "text"
+						}
+					}
+				},
+				"url": "http://localhost:8082/message/"
+			},
+			"response": []
+		}
+	]
+}
